@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bot Check</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .consent-box { border: 1px solid #ddd; padding: 30px; border-radius: 8px; background: #f9f9f9; }
+        button { background: #007cba; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #005a87; }
+    </style>
+</head>
+<body>
+<div class="consent-box">
+    <h1>Are you Human?</h1>
+    <p>Silly question, but are you actually a human?</p>
+
+    <button onclick="setConsentCookie()">Yeah, I'm human</button>
+</div>
+
+<script>
+    function setConsentCookie() {
+        // Set cookie for 30 days
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (30 * 24 * 60 * 60 * 1000));
+        document.cookie = "botcheck=1; expires=" + expires.toUTCString() + "; path=/; SameSite=Strict";
+
+        // Reload the page to continue with original request
+        window.location.reload();
+    }
+</script>
+</body>
+</html>
