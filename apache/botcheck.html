@@ -8,6 +8,8 @@
         .consent-box { border: 1px solid #ddd; padding: 30px; border-radius: 8px; background: #f9f9f9; }
         button { background: #007cba; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
         button:hover { background: #005a87; }
+        .actions { display: flex; flex-direction: column; gap: 12px; }
+        form { margin: 0; }
     </style>
 </head>
 <body>
@@ -15,7 +17,12 @@
     <h1>Are you Human?</h1>
     <p>Silly question, but are you actually a human?</p>
 
-    <button onclick="setConsentCookie()">Yeah, I'm human</button>
+    <div class="actions">
+        <button type="button" onclick="setConsentCookie()">Yeah, I'm human</button>
+        <form action="/botcheck-confirm" method="post">
+            <button type="submit" >Continue without JavaScript</button>
+        </form>
+    </div>
 </div>
 
 <script>
