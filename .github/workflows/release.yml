@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'lookup/go.mod'
+      
+      - name: Build lookup tool
+        run: make lookup
+      
+      - name: Install dependencies for update script
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+      
+      - name: Download newest IP addresses
+        run: ./update-bot-addresses.sh
+      
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          cd apache
+          tar -czf ../release/apache.tar.gz .
+          cd ..
+          zip -r release/apache.zip apache/
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/apache.tar.gz
+            release/apache.zip
+          body: |
+            Release of botcheck apache directory.
+            
+            This release includes:
+            - The compiled lookup tool
+            - Updated IP addresses from official bot sources
+            - All apache configuration files
+            
+            Extract the archive and deploy the contents to your Apache server.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
