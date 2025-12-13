@@ -1,20 +1,17 @@
 APACHE_DIR := apache
-WHITELIST_DIR := whitelist
+LOOKUP_DIR := lookup
 
-.PHONY: all whitelist ips useragents clean
+.PHONY: all lookup ips useragents clean
 
-all: whitelist
+all: lookup
 
-whitelist: $(APACHE_DIR)/whitelist
+lookup: $(APACHE_DIR)/lookup
 
-ips useragents: whitelist
-	@echo "Use $(APACHE_DIR)/whitelist; config selection now happens at runtime."
-
-$(APACHE_DIR)/whitelist: $(WHITELIST_DIR)/*.go | $(APACHE_DIR)
-	cd $(WHITELIST_DIR) && go build -o ../$@
+$(APACHE_DIR)/lookup: $(LOOKUP_DIR)/*.go | $(APACHE_DIR)
+	cd $(LOOKUP_DIR) && go build -o ../$@
 
 $(APACHE_DIR):
 	mkdir -p $@
 
 clean:
-	rm -f $(APACHE_DIR)/whitelist
+	rm -f $(APACHE_DIR)/lookup

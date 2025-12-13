@@ -1,6 +1,6 @@
-# Whitelist RewriteMap Helper
+# Lookup RewriteMap Helper
 
-This program implements an Apache `RewriteMap` helper that can serve many independent whitelists from a single long‑running process. It reads lookups from stdin (one per line) and replies on stdout with `FOUND` or `NULL`, as required by the RewriteMap protocol.
+This program implements an Apache `RewriteMap` helper that can serve many independent allow lists from a single long‑running process. It reads lookups from stdin (one per line) and replies on stdout with `FOUND` or `NULL`, as required by the RewriteMap protocol.
 
 ## How it works
 
@@ -23,17 +23,17 @@ This program implements an Apache `RewriteMap` helper that can serve many indepe
 Example `RewriteMap` configuration:
 
 ```
-RewriteMap whitelist prg:/path/to/whitelist
+RewriteMap lookup prg:/path/to/lookup
 ```
 
 Example rules that supply the config filename and lookup value:
 
 ```
-# IP whitelist (CIDR-aware)
-RewriteCond ${whitelist:addresses.net.list %{REMOTE_ADDR}|NOT_FOUND} !=NOT_FOUND
+# IP allow list (CIDR-aware)
+RewriteCond ${lookup:addresses.net.list %{REMOTE_ADDR}|NOT_FOUND} !=NOT_FOUND
 
-# User-Agent whitelist (case-insensitive regex)
-RewriteCond ${whitelist:useragents.ri.list %{HTTP_USER_AGENT}|NOT_FOUND} !=NOT_FOUND
+# User-Agent allow list (case-insensitive regex)
+RewriteCond ${lookup:useragents.ri.list %{HTTP_USER_AGENT}|NOT_FOUND} !=NOT_FOUND
 ```
 
 Each map invocation sends `"<config> <lookup>"` to the helper. The helper responds with `FOUND` if the lookup matches the chosen config, otherwise `NULL`.
