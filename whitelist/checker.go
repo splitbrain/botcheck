@@ -12,6 +12,12 @@ type checker interface {
 	Match(string) bool
 }
 
+// noMatchChecker always returns false.
+type noMatchChecker struct{}
+
+func (noMatchChecker) Match(string) bool { return false }
+
+// literalChecker matches exact string entries.
 type literalChecker struct {
 	entries map[string]struct{}
 }
@@ -25,29 +31,37 @@ func newLiteralChecker(values []string) *literalChecker {
 	return &literalChecker{entries: set}
 }
 
+// Match returns true if the input is an exact entry.
 func (c *literalChecker) Match(input string) bool {
 	_, ok := c.entries[input]
 	return ok
 }
 
+// regexChecker matches inputs against compiled regex patterns.
 type regexChecker struct {
-	patterns []*regexp.Regexp
+	patterns   []*regexp.Regexp
+	ignoreCase bool
 }
 
-// newRegexChecker compiles case-insensitive regex patterns, skipping invalid ones.
-func newRegexChecker(patterns []string) *regexChecker {
+// newRegexChecker compiles regex patterns, skipping invalid ones.
+func newRegexChecker(patterns []string, caseInsensitive bool) *regexChecker {
 	compiled := make([]*regexp.Regexp, 0, len(patterns))
 	for _, p := range patterns {
-		re, err := regexp.Compile("(?i)" + p)
+		prefix := ""
+		if caseInsensitive {
+			prefix = "(?i)"
+		}
+		re, err := regexp.Compile(prefix + p)
 		if err != nil {
 			log.Printf("skipping invalid regex %q: %v", p, err)
 			continue
 		}
 		compiled = append(compiled, re)
 	}
-	return &regexChecker{patterns: compiled}
+	return &regexChecker{patterns: compiled, ignoreCase: caseInsensitive}
 }
 
+// Match returns true if any compiled regex matches the input.
 func (c *regexChecker) Match(input string) bool {
 	for _, re := range c.patterns {
 		if re.MatchString(input) {
@@ -57,6 +71,7 @@ func (c *regexChecker) Match(input string) bool {
 	return false
 }
 
+// netChecker matches IPs and CIDRs.
 type netChecker struct {
 	exact map[string]struct{}
 	nets  []*net.IPNet
@@ -89,6 +104,7 @@ func newNetChecker(entries []string) *netChecker {
 	return &netChecker{exact: exact, nets: nets}
 }
 
+// Match returns true when the input IP belongs to an exact or CIDR entry.
 func (c *netChecker) Match(input string) bool {
 	ip := net.ParseIP(strings.TrimSpace(input))
 	if ip == nil {

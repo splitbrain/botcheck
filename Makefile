@@ -1,19 +1,20 @@
 APACHE_DIR := apache
 WHITELIST_DIR := whitelist
 
-.PHONY: all ips useragents clean
+.PHONY: all whitelist ips useragents clean
 
-all: $(APACHE_DIR)/ips $(APACHE_DIR)/useragents
+all: whitelist
 
-ips: $(APACHE_DIR)/ips
+whitelist: $(APACHE_DIR)/whitelist
 
-useragents: $(APACHE_DIR)/useragents
+ips useragents: whitelist
+	@echo "Use $(APACHE_DIR)/whitelist; config selection now happens at runtime."
 
-$(APACHE_DIR)/ips $(APACHE_DIR)/useragents: $(WHITELIST_DIR)/*.go | $(APACHE_DIR)
+$(APACHE_DIR)/whitelist: $(WHITELIST_DIR)/*.go | $(APACHE_DIR)
 	cd $(WHITELIST_DIR) && go build -o ../$@
 
 $(APACHE_DIR):
 	mkdir -p $@
 
 clean:
-	rm -f $(APACHE_DIR)/ips $(APACHE_DIR)/useragents
+	rm -f $(APACHE_DIR)/whitelist
