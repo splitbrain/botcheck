@@ -20,18 +20,16 @@ func parseConfigLines(contents string) []string {
 	return lines
 }
 
-// parseInput expects "<configFilename> <lookupValue>" and preserves spaces in the lookup value.
+// parseInput expects "<configFilename>;<lookupValue>" and preserves spaces in the lookup value.
 func parseInput(input string) (string, string, error) {
 	line := strings.TrimSpace(input)
 	if line == "" {
 		return "", "", fmt.Errorf("empty input")
 	}
 
-	sep := strings.IndexFunc(line, func(r rune) bool {
-		return r == ' ' || r == '\t'
-	})
+	sep := strings.IndexRune(line, ';')
 	if sep == -1 {
-		return "", "", fmt.Errorf("missing lookup value")
+		return "", "", fmt.Errorf("missing delimiter ; between config and lookup value")
 	}
 
 	config := strings.TrimSpace(line[:sep])

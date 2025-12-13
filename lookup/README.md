@@ -4,7 +4,7 @@ This program implements an Apache `RewriteMap` helper that can serve many indepe
 
 ## How it works
 
-- Input format: each line must be `<configFilename> <lookupValue>`, separated by whitespace. The lookup value may contain spaces; only the first whitespace separates the two fields.
+- Input format: each line must be `<configFilename>;<lookupValue>`, separated by a semicolon. The lookup value may contain spaces.
 - Config selection: `configFilename` must match `name[.(ri|re|net)].list`. The `name` must be alphanumeric. The optional suffix chooses the match mode:
   - `.ri.list` → case-insensitive regex
   - `.re.list` → case-sensitive regex
@@ -36,4 +36,4 @@ RewriteCond ${lookup:addresses.net.list %{REMOTE_ADDR}|NOT_FOUND} !=NOT_FOUND
 RewriteCond ${lookup:useragents.ri.list %{HTTP_USER_AGENT}|NOT_FOUND} !=NOT_FOUND
 ```
 
-Each map invocation sends `"<config> <lookup>"` to the helper. The helper responds with `FOUND` if the lookup matches the chosen config, otherwise `NULL`.
+Each map invocation sends `"<config>;<lookup>"` to the helper. The helper responds with `FOUND` if the lookup matches the chosen config, otherwise `NULL`.
