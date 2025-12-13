@@ -26,8 +26,16 @@ This repo bundles a tiny Apache setup that challenges suspicious traffic before 
 - Test: `make test` (runs `go test ./...` inside `lookup/`).
 - Clean: `make clean` (removes the built helper).
 
+## Releases
+When a tag is pushed, a GitHub Action automatically:
+1. Builds the lookup tool
+2. Downloads the latest IP addresses from official bot sources
+3. Creates a release with the complete `apache/` directory as downloadable archives (`.tar.gz` and `.zip`)
+
+Download the latest release from the [Releases page](https://github.com/splitbrain/botcheck/releases) to get a ready-to-deploy package.
+
 ## Deploying with Apache
-1. Build the helper and copy the `apache/` directory to your server.
+1. Download and extract a release archive (or build the helper yourself and copy the `apache/` directory to your server).
 2. Set an Apache `Define`, e.g. `Define BOTCHECK_DIR /opt/botcheck/apache`.
 3. Include `botcheck.conf` from your main config or a vhost.
 4. Edit `addresses.net.list` and `useragents.ri.list` to suit your allow rules (the helper reloads them automatically).
