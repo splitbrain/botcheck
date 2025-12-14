@@ -16,7 +16,7 @@ Define BOTCHECK_DIR /home/andi/projects/botcheck/apache
 Include ${BOTCHECK_DIR}/botcheck.conf
 ```
 
-Note that this setup does not work in `.htaccess`. Be sure to have the `mod_rewrite` and `mod_headers` modules enabled in Apache.
+Note that this setup does not work in `.htaccess` because the `RewriteMap` directive is not allowed there. Be sure to have the `mod_rewrite` and `mod_headers` modules enabled in Apache.
 
 ## Allow Lists
 
