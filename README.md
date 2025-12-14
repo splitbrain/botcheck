@@ -16,11 +16,13 @@ Define BOTCHECK_DIR /home/andi/projects/botcheck/apache
 Include ${BOTCHECK_DIR}/botcheck.conf
 ```
 
+Note that this setup does not work in `.htaccess`. Be sure to have the `mod_rewrite` and `mod_headers` modules enabled in Apache.
+
 ## Allow Lists
 
 The configuration will allow in requests that match either the IP/CIDR list in `addresses.net.list` or the User-Agent regex (case-insensitive) list in `useragents.ri.list`. You can edit these files to add your own rules. Requests to certain paths can be excluded from the bot check by adding regexes (case-sensitive) to `pathexcludes.re.list`.
 
-It is recommended to let in the known IP ranges of search engine crawlers and other good bots in `addresses.net.list`. You can find up-to-date lists of crawler IPs from various sources on the web. The `update-bot-addresses.sh` script will automatically download and update a list of known crawlers. Check the top of the script for the sources it uses. 
+It is recommended to let in the known IP ranges of search engine crawlers and other good bots in `addresses.net.list`. You can find up-to-date lists of crawler IPs from various sources on the web. The `update-bot-addresses.sh` script will automatically download and update a list of known crawlers. Check the top of the script for the sources it uses. The script requires `curl` and `jq` to run.
 
 ## How it works
 
