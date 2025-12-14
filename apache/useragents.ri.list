@@ -1,3 +1,4 @@
 ^curl/.+
 ^Wget/.+
 DokuWiki HTTP Client
+^DokuWikiVersionFix/1\.0$
