@@ -8,9 +8,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIST_FILE="${LIST_FILE:-${SCRIPT_DIR}/apache/addresses.net.list}"
 
 SOURCES=(
-  "Googlebot|https://developers.google.com/search/apis/ipranges/googlebot.json"
+  "AppleBot|https://search.developer.apple.com/applebot.json"
   "Bingbot|https://www.bing.com/toolbox/bingbot.json"
+  "CommonCrawl|https://index.commoncrawl.org/ccbot.json"
+  "DuckDuckBot|https://raw.githubusercontent.com/AnTheMaker/GoodBots/refs/heads/main/iplists/duckduckbot.ips"
   "GPT User Bot|https://openai.com/chatgpt-user.json"
+  "Googlebot|https://developers.google.com/search/apis/ipranges/googlebot.json"
   "Yandexbot|https://raw.githubusercontent.com/sefinek/known-bots-ip-whitelist/main/lists/yandexbot/ips.txt"
 )
 

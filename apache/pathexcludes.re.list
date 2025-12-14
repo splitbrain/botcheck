@@ -1,3 +1,11 @@
 # If the request path matches any of these patterns, it will be allowed without further processing.
-^/(status|robots\.txt|favicon\.ico|\.well-known/)$
+
+# Common exclusions
+^/(status|robots\.txt|favicon\.ico)$
+^/\.well-known/
+
+# dokuwiki specific exclusions
 ^/feed
+^/doku.php\?do=sitemap
+^/lib/exe/xmlrpc\.php
+^/lib/exe/jsonrpc\.php
