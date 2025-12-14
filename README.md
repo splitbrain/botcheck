@@ -24,11 +24,7 @@ flowchart TD
     SetCookie1 --> End1([Request Complete])
     SetCookie2 --> End1
     
-    CheckConfirm -->|No| CheckBotcheckPage{Request to<br/>/botcheck?}
-    CheckBotcheckPage -->|Yes| ServePage[Serve botcheck.html]
-    ServePage --> End2([Request Complete])
-    
-    CheckBotcheckPage -->|No| CheckRedirect{Error handling<br/>subrequest?}
+    CheckConfirm -->|No| CheckRedirect{Error handling<br/>subrequest?}
     CheckRedirect -->|Yes| Allow1[Set BOTCHECK=OK]
     Allow1 --> Allow([Continue Request])
     
@@ -53,7 +49,13 @@ flowchart TD
     Allow6 --> Allow
     
     CheckCookie -->|No| Deny[Return 402<br/>Show botcheck.html]
-    Deny --> End3([Request Blocked])
+    Deny --> UserChoice{User chooses...}
+    
+    UserChoice -->|JavaScript Path| JSClick[Click 'Yeah, I'm human'<br/>JS sets cookie<br/>Page reloads]
+    JSClick --> Start
+    
+    UserChoice -->|Non-JavaScript Path| NoJSClick[Click 'Continue without JavaScript'<br/>Form POST to /botcheck-confirm]
+    NoJSClick --> Start
 ```
 
 ## Repository layout
