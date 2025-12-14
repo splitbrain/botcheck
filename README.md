@@ -25,28 +25,23 @@ flowchart TD
     SetCookie2 --> End1
     
     CheckConfirm -->|No| CheckRedirect{Error handling<br/>subrequest?}
-    CheckRedirect -->|Yes| Allow1[Set BOTCHECK=OK]
-    Allow1 --> Allow([Continue Request])
+    CheckRedirect -->|Yes| AllowAccess[Set BOTCHECK=OK]
+    AllowAccess --> Allow([Continue Request])
     
     CheckRedirect -->|No| CheckMethod{Non-GET<br/>method?}
-    CheckMethod -->|Yes| Allow2[Set BOTCHECK=OK]
-    Allow2 --> Allow
+    CheckMethod -->|Yes| AllowAccess
     
     CheckMethod -->|No| CheckPath{Path in<br/>pathexcludes.re.list?}
-    CheckPath -->|Yes| Allow3[Set BOTCHECK=OK]
-    Allow3 --> Allow
+    CheckPath -->|Yes| AllowAccess
     
     CheckPath -->|No| CheckIP{IP in<br/>addresses.net.list?}
-    CheckIP -->|Yes| Allow4[Set BOTCHECK=OK]
-    Allow4 --> Allow
+    CheckIP -->|Yes| AllowAccess
     
     CheckIP -->|No| CheckUA{User-Agent in<br/>useragents.ri.list?}
-    CheckUA -->|Yes| Allow5[Set BOTCHECK=OK]
-    Allow5 --> Allow
+    CheckUA -->|Yes| AllowAccess
     
     CheckUA -->|No| CheckCookie{Has botcheck<br/>cookie?}
-    CheckCookie -->|Yes| Allow6[Set BOTCHECK=OK]
-    Allow6 --> Allow
+    CheckCookie -->|Yes| AllowAccess
     
     CheckCookie -->|No| Deny[Return 402<br/>Show botcheck.html]
     Deny --> UserChoice{User chooses...}
