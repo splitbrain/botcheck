@@ -13,6 +13,49 @@ This repo bundles a tiny Apache setup that challenges suspicious traffic before 
 - Requests without a match but carrying a `botcheck` cookie are also allowed. Everyone else is served `/botcheck.html` with HTTP 202 so humans can click through and set the cookie.
 - Config files live next to the binary. The helper reloads them on-the-fly when their mtime changes, so you can edit lists without restarting Apache.
 
+### Request Flow Diagram
+
+```mermaid
+flowchart TD
+    Start([Incoming Request]) --> CheckConfirm{POST to<br/>/botcheck-confirm?}
+    CheckConfirm -->|Yes| CheckReferer{Has valid<br/>Referer?}
+    CheckReferer -->|Yes| SetCookie1[Set botcheck cookie<br/>Redirect to referrer]
+    CheckReferer -->|No| SetCookie2[Set botcheck cookie<br/>Redirect to /]
+    SetCookie1 --> End1([Request Complete])
+    SetCookie2 --> End1
+    
+    CheckConfirm -->|No| CheckBotcheckPage{Request to<br/>/botcheck?}
+    CheckBotcheckPage -->|Yes| ServePage[Serve botcheck.html]
+    ServePage --> End2([Request Complete])
+    
+    CheckBotcheckPage -->|No| CheckRedirect{Error handling<br/>subrequest?}
+    CheckRedirect -->|Yes| Allow1[Set BOTCHECK=OK]
+    Allow1 --> Allow([Continue Request])
+    
+    CheckRedirect -->|No| CheckMethod{Non-GET<br/>method?}
+    CheckMethod -->|Yes| Allow2[Set BOTCHECK=OK]
+    Allow2 --> Allow
+    
+    CheckMethod -->|No| CheckPath{Path in<br/>pathexcludes.re.list?}
+    CheckPath -->|Yes| Allow3[Set BOTCHECK=OK]
+    Allow3 --> Allow
+    
+    CheckPath -->|No| CheckIP{IP in<br/>addresses.net.list?}
+    CheckIP -->|Yes| Allow4[Set BOTCHECK=OK]
+    Allow4 --> Allow
+    
+    CheckIP -->|No| CheckUA{User-Agent in<br/>useragents.ri.list?}
+    CheckUA -->|Yes| Allow5[Set BOTCHECK=OK]
+    Allow5 --> Allow
+    
+    CheckUA -->|No| CheckCookie{Has botcheck<br/>cookie?}
+    CheckCookie -->|Yes| Allow6[Set BOTCHECK=OK]
+    Allow6 --> Allow
+    
+    CheckCookie -->|No| Deny[Return 402<br/>Show botcheck.html]
+    Deny --> End3([Request Blocked])
+```
+
 ## Repository layout
 - `apache/botcheck.conf` — Apache include with the rewrite rules and helper wiring.
 - `apache/botcheck.html` — Minimal consent page that sets the `botcheck` cookie.
