@@ -3,30 +3,68 @@
 <head>
     <title>Bot Check</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-        .consent-box { border: 1px solid #ddd; padding: 30px; border-radius: 8px; background: #f9f9f9; }
-        button { background: #007cba; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #005a87; }
-        .actions { display: flex; flex-direction: column; gap: 12px; }
-        form { margin: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .consent-box {
+            border: 1px solid #ddd;
+            padding: 30px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        button {
+            background: #007cba;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #005a87;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
 <div class="consent-box">
     <h1>Are you Human?</h1>
-    <p>Silly question, but are you actually a human?</p>
+    <p>
+        Silly question, but are you actually a human?
+        We're having trouble with mindless bots running amok,
+        so we need to make sure you're not one of them.
+    </p>
 
-    <div class="actions">
-        <button type="button" onclick="setConsentCookie()">Yeah, I'm human</button>
-        <form action="/botcheck-confirm" method="post">
-            <button type="submit" >Continue without JavaScript</button>
-        </form>
-    </div>
+    <form action="/botcheck-confirm" method="post">
+        <button type="submit">Yes, I'm a real person.</button>
+    </form>
+
+    <noscript>
+        <p>No JavaScript, relying on referrer header.</p>
+    </noscript>
 </div>
 
 <script>
-    function setConsentCookie() {
+    document.getElementsByTagName('form')[0].addEventListener('submit', (ev) => {
+        ev.preventDefault();
         // Set cookie for 30 days
         const expires = new Date();
         expires.setTime(expires.getTime() + (30 * 24 * 60 * 60 * 1000));
@@ -34,7 +72,7 @@
 
         // Reload the page to continue with original request
         window.location.reload();
-    }
+    });
 </script>
 </body>
 </html>

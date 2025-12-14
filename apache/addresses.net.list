@@ -1,7 +1,5 @@
 # Add IP addresses or CIDR blocks here, one per line.
 
-192.168.1.11
-
 #Internet Archive
 207.241.224.0/20
 208.70.24.0/21
