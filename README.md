@@ -79,6 +79,10 @@ To make it easy to configure allow lists the RewriteMap feature of mod_rewrite i
 
 Check the [lookup/README.md](lookup/README.md) file for more details about the protocol and how to build and test the helper.
 
+## Checking your logs
+
+There's a `check402.py` Python script in this repository which can be used to analyze your Apache access log. It will list all IPs that received a 402 status response without ever passing the botcheck. With each IP the number of requests and the User-Agent strings associated with it are shown. This can help you identify persistent bots that you might want to block on the firewall level or add to your allow lists.
+
 ## License
 
 Copyright 2025 Andreas Gohr <andi@splitbrain.org>
