@@ -10,10 +10,13 @@ LIST_FILE="${LIST_FILE:-${SCRIPT_DIR}/apache/addresses.net.list}"
 SOURCES=(
   "AppleBot|https://search.developer.apple.com/applebot.json"
   "Bingbot|https://www.bing.com/toolbox/bingbot.json"
+  "ChatGPT Search Bot|https://openai.com/searchbot.json"
+  "ChatGPT User Bot|https://openai.com/chatgpt-user.json"
   "CommonCrawl|https://index.commoncrawl.org/ccbot.json"
   "DuckDuckBot|https://raw.githubusercontent.com/AnTheMaker/GoodBots/refs/heads/main/iplists/duckduckbot.ips"
-  "GPT User Bot|https://openai.com/chatgpt-user.json"
   "Googlebot|https://developers.google.com/search/apis/ipranges/googlebot.json"
+  "Perplexity Search Bot|https://www.perplexity.ai/perplexitybot.json"
+  "Perplexity User Bot|https://www.perplexity.ai/perplexity-user.json"
   "Yandexbot|https://raw.githubusercontent.com/sefinek/known-bots-ip-whitelist/main/lists/yandexbot/ips.txt"
 )
 
