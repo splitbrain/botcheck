@@ -2,3 +2,4 @@
 ^Wget/.+
 DokuWiki HTTP Client
 ^DokuWikiVersionFix/1\.0$
+^upptime.js.org$
