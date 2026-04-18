@@ -62,7 +62,7 @@ for entry in "${SOURCES[@]}"; do
 
   content_type="$(awk 'BEGIN{IGNORECASE=1} /^content-type:/ {gsub(/\r$/,""); sub(/^content-type:[[:space:]]*/i,""); sub(/;.*/,""); print; exit}' "$tmp_hdr")"
   is_json=0
-  if [[ "$content_type" =~ json ]]; then
+  if [[ "$content_type" =~ json ]] || [[ "$url" == *.json ]]; then
     is_json=1
   fi
 
