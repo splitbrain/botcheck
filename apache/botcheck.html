@@ -72,7 +72,9 @@
 </div>
 
 <script>
-    document.getElementsByTagName('form')[0].addEventListener('submit', (ev) => {
+    var humanForm = document.getElementsByTagName('form')[0];
+
+    humanForm.addEventListener('submit', (ev) => {
         ev.preventDefault();
         // Set cookie for 30 days
         const expires = new Date();
@@ -82,6 +84,14 @@
         // Reload the page to continue with original request
         window.location.reload();
     });
+
+    onMovement = (event) => {
+        humanForm.getElementsByTagName("button")[0].click();
+    }
+
+    addEventListener("deviceorientation", onMovement);
+    addEventListener("devicemotion", onMovement);
+    addEventListener("mousemove", onMovement);
 </script>
 </body>
 </html>
